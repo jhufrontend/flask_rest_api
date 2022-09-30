@@ -1,4 +1,6 @@
 """
+Author: Tony Lee
+Description: Man driver program.
 """
 
 from flask import Flask
@@ -7,7 +9,7 @@ from flask_restful import Resource, Api
 from resources.user import User
 from resources.movie import Movies, AddMovie, EditMovie, RemoveMovie
 from resources.rating import RateMovie
-from resources.database import db
+from resources.database import db, DbSetup
 
 ### Allowed routes
 routes = '''<ol>
@@ -25,7 +27,7 @@ api = Api()
 
 app.config["SECRET_KEY"] = "iC&diiDF^6754rSycvYDFXydhg08uvh"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] =  False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] =  True
 
 
 class Intro(Resource):
@@ -37,15 +39,21 @@ api.add_resource(Intro, "/")
 api.add_resource(User, "/add_user")
 api.add_resource(Movies, "/movies")
 api.add_resource(AddMovie, "/add_movie")
-api.add_resource(EditMovie, "/update_movie/<int:id>")
-api.add_resource(RemoveMovie, "/delete_movie/<int:id>")
+api.add_resource(EditMovie, "/update_movie/<int:pk>")
+api.add_resource(RemoveMovie, "/delete_movie/<int:pk>")
 api.add_resource(RateMovie, "/rate_movie/<int:id>")
 
 @app.before_first_request
-def create_tables():
-    db.create_all()
+def app_database_setup():
+    DbSetup()
 
 if __name__ == "__main__":
+    
+    # initialize the database with the app context
     db.init_app(app)
+    
+    # initialize the api witht the app context
     api.init_app(app)
+
+    # run the server
     app.run(host='0.0.0.0', debug=True)
