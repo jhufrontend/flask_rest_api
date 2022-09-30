@@ -3,7 +3,6 @@ Author: Tony Lee
 Descriptin: Database initialization, setup, and helper procedures.
 """
 from datetime import datetime
-from unicodedata import east_asian_width
 import sqlalchemy
 
 from models import db

@@ -57,6 +57,6 @@ class RemoveMovie(Resource):
     def delete(self, pk):
         '''Request method for deleting a movie object from the database'''
         if not movieDao.delete_movie(pk):
-            return jsonify({"error": "could not update movie"})
+            return jsonify({"error": "could not delete movie"})
 
         return "Deleted", 200
