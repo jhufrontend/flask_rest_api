@@ -5,6 +5,7 @@ Description: Models and ORM for the API datastore.
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
+from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy import ForeignKey
 
 db = SQLAlchemy()
@@ -38,6 +39,13 @@ class User(db.Model):
     '''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)    
 
 
 class Rating(db.Model):

@@ -16,9 +16,10 @@ class UserDAO:
     def __init__(self):
         pass
 
-    def create_user(self, username):
+    def add_user(self, username, password):
         '''Add a new user to the database'''
-        user = User(username)
+        user = User(username = username)
+        user.hash_password(password)
 
         try:
             db.session.add(user)
