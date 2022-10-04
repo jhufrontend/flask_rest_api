@@ -14,9 +14,9 @@ class UserDAO:
     '''
     CRUD methods for user objects in the database
     '''
-    def add_user(self, username, password, user_type):
+    def add_user(self, username, password):
         '''Add a new user to the database'''
-        user = User(username=username, user_type=user_type)
+        user = User(username=username)
         user.hash_password(password)
 
         try:
@@ -97,8 +97,22 @@ class MovieDAO:
         
         return True
 
+
 class RatingDAO:
-    pass
+    '''CRUD methods for rating objects in the database'''
+    def add_rating(self, movie_id, username, value):
+        '''Add new rating to the database'''
+        user_id = db.session.query(User).filter_by(username=username).first()
+        rating = Rating(movie_id=movie_id, user_id=user_id.id, value=value)
+
+        try:
+            db.session.add(rating)
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            return False
+        
+        return True
 
 
 class DbSetup():

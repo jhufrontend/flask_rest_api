@@ -45,8 +45,6 @@ def verify_password(username, password):
     if not user or not user.verify_password(password):
         print("Username/Password authentication failed!")
         return False
-    if user.user_type != 'admin':
-        return False
     g.user = user
     return True
 

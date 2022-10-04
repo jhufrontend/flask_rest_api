@@ -40,7 +40,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.String(128), default="Regular")
 
     def hash_password(self, password):
         '''Convert plain text password to hashed string'''

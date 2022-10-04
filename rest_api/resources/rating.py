@@ -2,13 +2,24 @@
 Author: Tony Lee
 Description: Everything related to the rating resource grouped here.
 """
-from flask import request
+from flask import jsonify, request
 from flask_restful import Resource
 
+from . import auth
+from .database import RatingDAO
+
+ratingDao = RatingDAO()
+
 class RateMovie(Resource):
-    def post(self):
+    '''CRUD methods for rating objects in the database'''
+    @auth.login_required
+    def post(self, id):
         data = request.json
-        user_id = data['user_id']
-        movie_id = data['movie_id']
+        username = auth.current_user()
+
+        value = data['value']
+
+        if not ratingDao.add_rating(id, username, value):
+            return jsonify({"error": "could not rate movie"})
 
         return "Success", 200
