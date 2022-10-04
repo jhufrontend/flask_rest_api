@@ -45,7 +45,7 @@ class EditMovie(Resource):
     def put(self, pk):
         '''Request method for updating a database movie object'''
         data = request.json
-        print(data)
+
         title = data['title']
         released = datetime.strptime(data['released'], "%m-%d-%Y")
 

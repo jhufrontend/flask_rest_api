@@ -14,9 +14,9 @@ class UserDAO:
     '''
     CRUD methods for user objects in the database
     '''
-    def add_user(self, username, password):
+    def add_user(self, username, password, user_type):
         '''Add a new user to the database'''
-        user = User(username = username)
+        user = User(username=username, user_type=user_type)
         user.hash_password(password)
 
         try:
