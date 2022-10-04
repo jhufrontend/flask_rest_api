@@ -8,6 +8,7 @@ from flask_restful import Resource
 
 from . import auth
 from .database import MovieDAO
+from .database import RatingDAO
 
 # initialize the Movie database access object
 movieDao = MovieDAO()
@@ -17,6 +18,11 @@ class Movies(Resource):
     def get(self):
         '''Request method for retreiving movie object from the database.'''
         movies = movieDao.get_movies()
+        rating_dao = RatingDAO()
+        # get the rating of every movie in the list
+        for movie in movies:
+            print(type(movie), movie)
+            movie.rating = rating_dao.get_rating(movie.id)
 
         return jsonify({
             'movies': [result.serialized for result in movies]

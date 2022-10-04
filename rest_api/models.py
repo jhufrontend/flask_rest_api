@@ -17,6 +17,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), unique=True, nullable=False)
     released = db.Column(db.Date, nullable=False)
+    rating = None
 
     def __repr__(self):
         return str(self.id) + self.title + self.released
@@ -30,7 +31,8 @@ class Movie(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'Release Year': datetime.strftime(self.released, "%B %d, %Y")
+            'Release Year': datetime.strftime(self.released, "%B %d, %Y"),
+            'Rating': self.rating
         }
 
 class User(db.Model):

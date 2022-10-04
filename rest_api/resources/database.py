@@ -23,6 +23,7 @@ class UserDAO:
             db.session.add(user)
             db.session.commit()
         except Exception as e:
+            db.session.rollback()
             print(str(e))
             return False
 
@@ -114,17 +115,49 @@ class RatingDAO:
 
         return True
 
+    def get_rating(self, movie_id):
+        '''Get the rating score of a particular movie'''
+        avg_rating = 0
+        scores = None
+        try:
+            scores = db.session.query(Rating).filter_by(movie_id=movie_id).all()
+        except Exception as e:
+            print(str(e))
+
+        scores_sum = 0
+        for score in scores:
+            scores_sum += score.value
+        try:
+            avg_rating = scores_sum / len(scores)
+        except ZeroDivisionError:
+            avg_rating = 0
+
+        return avg_rating
+
 
 class DbSetup():
     '''
     Initialize and set up the database, by creating tables as necessary
     and inserting dummy records as a starting point.
     '''
+    users = [
+        {"username": "john", "password": "admin"},
+        {"username": "jane", "password": "admin"},
+        {"username": "admin", "password": "qwerty"}
+    ]
     movies = [
         {"title": "Avengers: Endgame",
         "released": datetime.strptime("04-22-2019", "%m-%d-%Y")},
         {"title": "Captain America: Civil War",
         "released": datetime.strptime("04-16-2016", "%m-%d-%Y")}
+    ]
+    ratings = [
+        {"movie_id": 1, "username": "john", "value": 5},
+        {"movie_id": 1, "username": "jane", "value": 4},
+        {"movie_id": 1, "username": "admin", "value": 3},
+        {"movie_id": 2, "username": "john", "value": 5},
+        {"movie_id": 2, "username": "jane", "value": 4},
+        {"movie_id": 2, "username": "admin", "value": 4}
     ]
     def __init__(self):
         '''constructor will create all tables for the database.'''
@@ -135,6 +168,9 @@ class DbSetup():
     def prepopulate(self):
         '''Add records to the database after intial creation of tables.'''
         # insert into user
+        user_dao = UserDAO()
+        for user in self.users:
+            user_dao.add_user(user['username'], user['password'])
 
         # insert into movie
         movie_dao = MovieDAO()
@@ -142,3 +178,6 @@ class DbSetup():
             movie_dao.add_movie(movie['title'], movie['released'])
 
         # insert into rating
+        rating_dao = RatingDAO()
+        for rating in self.ratings:
+            rating_dao.add_rating(rating['movie_id'], rating['username'], rating['value'])
