@@ -21,7 +21,6 @@ class Movies(Resource):
         rating_dao = RatingDAO()
         # get the rating of every movie in the list
         for movie in movies:
-            print(type(movie), movie)
             movie.rating = rating_dao.get_rating(movie.id)
 
         return jsonify({
