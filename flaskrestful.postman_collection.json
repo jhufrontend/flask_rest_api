@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a965a4df-df21-4579-be5f-61660c0c353d",
+		"_postman_id": "465be8c4-5ba1-417f-86d0-e083aa2a15f6",
 		"name": "flaskrestful",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -23,13 +23,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://192.168.100.4:5000/",
+					"raw": "http://192.168.100.28:5000/",
 					"protocol": "http",
 					"host": [
 						"192",
 						"168",
 						"100",
-						"4"
+						"28"
 					],
 					"port": "5000",
 					"path": [
@@ -41,21 +41,207 @@
 		},
 		{
 			"name": "movies",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://192.168.100.4:5000/movies",
+					"raw": "http://192.168.100.28:5000/movies",
 					"protocol": "http",
 					"host": [
 						"192",
 						"168",
 						"100",
-						"4"
+						"28"
 					],
 					"port": "5000",
 					"path": [
 						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_movie",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Avengers Infinity War\",\n    \"released\": \"04-23-2018\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.100.28:5000/add_movie",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"100",
+						"28"
+					],
+					"port": "5000",
+					"path": [
+						"add_movie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit_movie",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Avengers: Infinity War\",\n    \"released\": \"04-23-2018\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.100.28:5000/update_movie/3",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"100",
+						"28"
+					],
+					"port": "5000",
+					"path": [
+						"update_movie",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"jane\",\n    \"password\": \"admin\",\n    \"user_type\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.100.28:5000/add_user",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"100",
+						"28"
+					],
+					"port": "5000",
+					"path": [
+						"add_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_movie",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.100.28:5000/delete_movie/3",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"100",
+						"28"
+					],
+					"port": "5000",
+					"path": [
+						"delete_movie",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rate_movie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.100.28:5000/rate_movie/3",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"100",
+						"28"
+					],
+					"port": "5000",
+					"path": [
+						"rate_movie",
+						"3"
 					]
 				}
 			},
