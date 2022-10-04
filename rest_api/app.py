@@ -1,6 +1,6 @@
 """
 Author: Tony Lee
-Description: Man driver program.
+Description: Main driver program.
 """
 
 from flask import Flask, g
@@ -15,7 +15,7 @@ from resources.database import db, DbSetup
 
 
 ### Allowed routes
-routes = '''<ol>
+ROUTES = '''<ol>
 <li> /movies (GET => retrieve all movies) </li>
 <li> /add_user (POST - add API users - everyone can signup to use API) </li>
 <li> /add_movie (POST => action by admins only - authentication/authorization) </li>
@@ -34,8 +34,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] =  True
 
 
 class Intro(Resource):
+    '''Method to get default routes allowed by the API'''
     def get(self):
-        return '<h1>Allowed Routes</h1>' + routes.replace("\n", "")
+        '''Defalr routes for the API'''
+        return '<h1>Allowed Routes</h1>' + ROUTES.replace("\n", "")
 
 
 @auth.verify_password
@@ -54,17 +56,18 @@ api.add_resource(Movies, "/movies")
 api.add_resource(AddMovie, "/add_movie")
 api.add_resource(EditMovie, "/update_movie/<int:pk>")
 api.add_resource(RemoveMovie, "/delete_movie/<int:pk>")
-api.add_resource(RateMovie, "/rate_movie/<int:id>")
+api.add_resource(RateMovie, "/rate_movie/<int:movie_id>")
 
 @app.before_first_request
 def app_database_setup():
+    '''Initialize the database and stored records'''
     DbSetup()
 
 if __name__ == "__main__":
-    
+
     # initialize the database with the app context
     db.init_app(app)
-    
+
     # initialize the api witht the app context
     api.init_app(app)
 
