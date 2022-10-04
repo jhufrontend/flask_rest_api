@@ -10,10 +10,20 @@ The application uses object oriented programming paradigm to achieve an abstract
 ## Limitations
 This is a small application with entry level functionalities which makes it open to certain limitations and development level flaws. Some of these flaws include.
 - All registered users can add, update, and delete movies,
+- A user can rate a movie more than once
 - Loosely coupled database entity relationships,
 - Movie ratings calculated each time when a request to get movies is made,
 - Loose handling of exceptions with sometimes generalized excaptions caught,
 - Generic error messages thrown for different exceptions,
+
+Some of the above limitations can be mitigated by additional development, whereas others can be solved by the frontend application that leverages the API. There is
+sufficient room for improving the application and given more time, I could do better. For instance, I could check if the user has already rated a particular movie
+and avoid repetitive rating by throwing an error. I would also have admin users who can manipulate the movie objects in the database and regular users who could
+only rate movies.
+
+One of the requirements for the project was to achieve a perfect score in pylint tests. While I tried my best to follow the best coding practices, some generic code
+styles could not pass pylint tests. One of them was the SQLAlchemy db object. Pylint could not recognize that it had attribute Column and the varied key word
+arguments that could appear in such objects. However, some files were able to individually attain perfect scores in pylint when not combined as an entire project.
 
 ## Usage
 To run the application, certain requirements must be fullfilled. To begin with, the system must have python installed. From here, the system could create a virtual environment and install the modules listed in requirements.txt files using the following commands.
