@@ -57,17 +57,14 @@ class MovieDAO:
 
         return True
 
-    def get_movies(self, movie_id=None, user_id=None):
+    def get_movies(self, movie_id=None):
         '''Read movies from the database based on certain filters'''
         result = None
         try:
             if movie_id is not None:
                 result = db.session.query(Movie).get(id)
-            elif movie_id is None and user_id is None:
+            elif movie_id is None:
                 result = db.session.query(Movie).all()
-            else:
-                # result = db.query(Movie).filter(Movie.rating_id==user_id)
-                pass
         except Exception as e:
             print(e)
 
