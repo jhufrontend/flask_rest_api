@@ -24,7 +24,7 @@ class UserDAO:
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            print(str(e))
+            # print(str(e))
             return False
 
         return True
@@ -76,11 +76,15 @@ class MovieDAO:
     def update_movie(self, movie_id, title, released):
         '''Update a movie record in the database'''
         try:
-            db.session.query(Movie).filter(Movie.id == movie_id).update({
-                Movie.title: title,
-                Movie.released: released
-            })
-            db.session.commit()
+            movie = db.session.query(Movie).filter(Movie.id == movie_id)
+            if movie.first() is not None:
+                movie.update({
+                    Movie.title: title,
+                    Movie.released: released
+                })
+                db.session.commit()
+            else:
+                return False
         except AttributeError:
             db.session.rollback()
             return False
@@ -159,6 +163,7 @@ class DbSetup():
         {"movie_id": 2, "username": "jane", "value": 4},
         {"movie_id": 2, "username": "admin", "value": 4}
     ]
+    
     def __init__(self):
         '''constructor will create all tables for the database.'''
         if not os.path.exists("../database.db"):
