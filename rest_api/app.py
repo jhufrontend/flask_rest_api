@@ -3,13 +3,16 @@ Author: Tony Lee
 Description: Man driver program.
 """
 
-from flask import Flask
+from flask import Flask, g
 from flask_restful import Resource, Api
 
-from resources.user import User
+from models import User
+from resources import auth
+from resources.user import Users
 from resources.movie import Movies, AddMovie, EditMovie, RemoveMovie
 from resources.rating import RateMovie
 from resources.database import db, DbSetup
+
 
 ### Allowed routes
 routes = '''<ol>
@@ -35,8 +38,18 @@ class Intro(Resource):
         return '<h1>Allowed Routes</h1>' + routes.replace("\n", "")
 
 
+@auth.verify_password
+def verify_password(username, password):
+    '''verify_password callback for auth.login_required'''
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.verify_password(password):
+        print("Username/Password authentication failed!")
+        return False
+    g.user = user
+    return True
+
 api.add_resource(Intro, "/")
-api.add_resource(User, "/add_user")
+api.add_resource(Users, "/add_user")
 api.add_resource(Movies, "/movies")
 api.add_resource(AddMovie, "/add_movie")
 api.add_resource(EditMovie, "/update_movie/<int:pk>")

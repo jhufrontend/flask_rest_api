@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import request, jsonify
 from flask_restful import Resource
 
+from . import auth
 from .database import MovieDAO
 
 # initialize the Movie database access object
@@ -24,6 +25,7 @@ class Movies(Resource):
 
 class AddMovie(Resource):
     '''Application resource to handle add movie operations'''
+    @auth.login_required
     def post(self):
         '''Request method for adding a movie object to the database'''
         data = request.json
@@ -39,6 +41,7 @@ class AddMovie(Resource):
 
 class EditMovie(Resource):
     '''Application Resource to handle update movie operations'''
+    @auth.login_required
     def put(self, pk):
         '''Request method for updating a database movie object'''
         data = request.json
@@ -54,6 +57,7 @@ class EditMovie(Resource):
 
 class RemoveMovie(Resource):
     '''Application Resource to handle delete movie operations'''
+    @auth.login_required
     def delete(self, pk):
         '''Request method for deleting a movie object from the database'''
         if not movieDao.delete_movie(pk):

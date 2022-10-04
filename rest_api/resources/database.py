@@ -3,6 +3,7 @@ Author: Tony Lee
 Descriptin: Database initialization, setup, and helper procedures.
 """
 from datetime import datetime
+import os
 import sqlalchemy
 
 from models import db
@@ -13,9 +14,6 @@ class UserDAO:
     '''
     CRUD methods for user objects in the database
     '''
-    def __init__(self):
-        pass
-
     def add_user(self, username, password):
         '''Add a new user to the database'''
         user = User(username = username)
@@ -24,10 +22,21 @@ class UserDAO:
         try:
             db.session.add(user)
             db.session.commit()
-        except:
+        except Exception as e:
+            print(str(e))
             return False
         
         return True
+    
+    def get_user(self, username):
+        '''Retrieve a single user from the database'''
+        user = None
+        try:
+            user = User.query.filter_by(username = username).first()
+        except Exception as e:
+            print(str(e))
+        
+        return user
 
 
 class MovieDAO:
@@ -105,8 +114,9 @@ class DbSetup():
     ]
     def __init__(self):
         '''constructor will create all tables for the database.'''
-        db.create_all()
-        self.prepopulate()
+        if not os.path.exists("../database.db"):
+            db.create_all()
+            self.prepopulate()
 
     def prepopulate(self):
         '''Add records to the database after intial creation of tables.'''
